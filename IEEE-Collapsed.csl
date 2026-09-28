@@ -10,8 +10,8 @@
     <id>http://www.zotero.org/styles/ieee-collapsed-ranges</id>
     <link href="https://journals.ieeeauthorcenter.ieee.org/your-role-in-article-production/ieee-editorial-style-manual/"
           rel="documentation"/>
-    <updated>2026-09-28T00:00:00+00:00</updated>
-    <summary>IEEE-style numeric citations with automatic collapsing of consecutive citation numbers into ranges.</summary>
+    <updated>2026-09-28T23:00:00+00:00</updated>
+    <summary>IEEE-style numeric citations with automatic collapsing of consecutive citation numbers into ranges, including URL and access-date rendering for web references.</summary>
     <category citation-format="numeric"/>
     <category field="engineering"/>
   </info>
@@ -69,7 +69,18 @@
         <text variable="DOI" prefix=" doi: "/>
       </if>
       <else-if variable="URL">
-        <text variable="URL" prefix=" "/>
+        <group prefix=" [Online]. Available: " delimiter="">
+          <text variable="URL"/>
+        </group>
+        <choose>
+          <if variable="accessed">
+            <date variable="accessed" prefix=" [Accessed: " suffix="].">
+              <date-part name="month" form="short" suffix=" "/>
+              <date-part name="day" suffix=", "/>
+              <date-part name="year"/>
+            </date>
+          </if>
+        </choose>
       </else-if>
     </choose>
   </macro>

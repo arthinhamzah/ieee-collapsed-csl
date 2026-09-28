@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<style xmlns="http://purl.org/net/xbiblio/csl"
+       version="1.0"
+       class="in-text"
+       demote-non-dropping-particle="sort-only">
+
+  <info>
+    <title>IEEE Numeric - Collapsed Ranges</title>
+    <title-short>IEEE-Collapsed</title-short>
+    <id>http://www.zotero.org/styles/ieee-collapsed-ranges</id>
+    <link href="https://journals.ieeeauthorcenter.ieee.org/your-role-in-article-production/ieee-editorial-style-manual/"
+          rel="documentation"/>
+    <updated>2026-09-28T00:00:00+00:00</updated>
+    <summary>IEEE-style numeric citations with automatic collapsing of consecutive citation numbers into ranges.</summary>
+    <category citation-format="numeric"/>
+    <category field="engineering"/>
+  </info>
+
+  <macro name="author">
+    <names variable="author">
+      <name and="text" delimiter=", " initialize-with=". " et-al-min="7" et-al-use-first="1"/>
+      <et-al font-style="italic"/>
+      <substitute>
+        <names variable="editor">
+          <name and="text" delimiter=", " initialize-with=". "/>
+        </names>
+        <text variable="title"/>
+      </substitute>
+    </names>
+  </macro>
+
+  <macro name="title">
+    <choose>
+      <if type="book report thesis graphic legal_case legislation motion_picture song software standard"
+          match="any">
+        <text variable="title" font-style="italic"/>
+      </if>
+      <else>
+        <text variable="title" quotes="true"/>
+      </else>
+    </choose>
+  </macro>
+
+  <macro name="issued">
+    <date variable="issued">
+      <date-part name="year"/>
+    </date>
+  </macro>
+
+  <macro name="journal">
+    <group delimiter=", ">
+      <text variable="container-title" font-style="italic" form="short"/>
+      <group delimiter=" ">
+        <text term="volume" form="short"/>
+        <text variable="volume"/>
+      </group>
+      <group delimiter=" ">
+        <text term="issue" form="short"/>
+        <text variable="issue"/>
+      </group>
+      <text variable="page"/>
+      <text macro="issued"/>
+    </group>
+  </macro>
+
+  <macro name="access">
+    <choose>
+      <if variable="DOI">
+        <text variable="DOI" prefix=" doi: "/>
+      </if>
+      <else-if variable="URL">
+        <text variable="URL" prefix=" "/>
+      </else-if>
+    </choose>
+  </macro>
+
+  <!-- Citation: [5]–[13] rather than [5], [6], ... [13] -->
+  <citation collapse="citation-number">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout prefix="[" suffix="]" delimiter=", ">
+      <text variable="citation-number"/>
+    </layout>
+  </citation>
+
+  <bibliography entry-spacing="0" second-field-align="flush">
+    <sort>
+      <key variable="citation-number"/>
+    </sort>
+    <layout suffix=".">
+      <text variable="citation-number" prefix="[" suffix="] "/>
+      <text macro="author" suffix=", "/>
+
+      <choose>
+        <!-- Journal article -->
+        <if type="article-journal">
+          <group delimiter=", ">
+            <text macro="title"/>
+            <text macro="journal"/>
+          </group>
+          <text macro="access"/>
+        </if>
+
+        <!-- Conference paper -->
+        <else-if type="paper-conference speech" match="any">
+          <group delimiter=", ">
+            <text macro="title"/>
+            <group delimiter=" ">
+              <text term="in"/>
+              <text variable="container-title" font-style="italic"/>
+            </group>
+            <text macro="issued"/>
+            <text variable="page"/>
+          </group>
+          <text macro="access"/>
+        </else-if>
+
+        <!-- Book -->
+        <else-if type="book">
+          <group delimiter=", ">
+            <text macro="title"/>
+            <text variable="edition" suffix=" ed."/>
+            <text variable="publisher"/>
+            <text variable="publisher-place"/>
+            <text macro="issued"/>
+          </group>
+          <text macro="access"/>
+        </else-if>
+
+        <!-- Chapter -->
+        <else-if type="chapter">
+          <group delimiter=", ">
+            <text macro="title"/>
+            <group delimiter=" ">
+              <text term="in"/>
+              <text variable="container-title" font-style="italic"/>
+            </group>
+            <text variable="publisher"/>
+            <text variable="publisher-place"/>
+            <text macro="issued"/>
+            <text variable="page"/>
+          </group>
+          <text macro="access"/>
+        </else-if>
+
+        <!-- Thesis -->
+        <else-if type="thesis">
+          <group delimiter=", ">
+            <text macro="title"/>
+            <text variable="genre"/>
+            <text variable="publisher"/>
+            <text macro="issued"/>
+          </group>
+          <text macro="access"/>
+        </else-if>
+
+        <!-- Web page -->
+        <else-if type="webpage post post-weblog" match="any">
+          <group delimiter=", ">
+            <text macro="title"/>
+            <text variable="container-title"/>
+          </group>
+          <text macro="access"/>
+        </else-if>
+
+        <!-- Generic fallback -->
+        <else>
+          <group delimiter=", ">
+            <text macro="title"/>
+            <text variable="container-title" font-style="italic"/>
+            <text variable="volume"/>
+            <text variable="issue"/>
+            <text variable="page"/>
+            <text macro="issued"/>
+          </group>
+          <text macro="access"/>
+        </else>
+      </choose>
+    </layout>
+  </bibliography>
+</style>
